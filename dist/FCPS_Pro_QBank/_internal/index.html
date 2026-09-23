@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FCPS Pro - Part 1 QBank</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- SCREEN: AUTH (Login/Register/Forgot) -->
+    <div id="login-screen" class="screen login-layout active">
+        <div class="login-card" style="max-height: 90vh; overflow-y: auto;">
+            <div class="brand mb-4 text-center" style="justify-content: center; border-bottom: none; color: var(--primary);">
+                <i class="fa-solid fa-stethoscope fa-2x mb-2" style="display: block;"></i>
+                <span style="font-size: 1.8rem;">FCPS Pro</span>
+            </div>
+            
+            <div id="auth-alert" class="auth-alert hidden"></div>
+
+            <!-- VIEW: LOGIN -->
+            <div id="view-login">
+                <h3 class="mb-2 text-center" style="color: var(--primary);">Welcome Back</h3>
+                <p class="text-muted text-center mb-4">Log in to access your question bank and analytics.</p>
+                
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="input-group mb-3">
+                        <label>Email Address</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="dr@example.com" required>
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <label class="mb-0">Password</label>
+                            <a href="#" class="auth-link" onclick="toggleAuthView('view-forgot'); return false;">Forgot password?</a>
+                        </div>
+                        <input type="password" id="login-password" class="form-input mt-2" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">Sign In</button>
+                </form>
+                <div class="text-center mt-4 pt-3 border-top">
+                    <p class="text-muted" style="font-size: 0.95rem;">New to FCPS Pro? <a href="#" class="auth-link fw-bold" onclick="toggleAuthView('view-register'); return false;">Create an account</a></p>
+                </div>
+            </div>
+
+            <!-- VIEW: REGISTER -->
+            <div id="view-register" class="hidden">
+                <h3 class="mb-2 text-center" style="color: var(--primary);">Create Account</h3>
+                <p class="text-muted text-center mb-4">Join to save your progress and access the QBank.</p>
+                
+                <form id="register-form" onsubmit="handleRegister(event)">
+                    <div class="input-group mb-3">
+                        <label>Full Name</label>
+                        <input type="text" id="reg-name" class="form-input" placeholder="e.g. Dr. Ali" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label>Email Address</label>
+                        <input type="email" id="reg-email" class="form-input" placeholder="dr@example.com" required>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label>Password</label>
+                        <input type="password" id="reg-password" class="form-input" placeholder="Create a password" required minlength="6">
+                    </div>
+                    <div class="input-group mb-4">
+                        <label>Confirm Password</label>
+                        <input type="password" id="reg-confirm" class="form-input" placeholder="Repeat password" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Sign Up</button>
+                </form>
+                <div class="text-center mt-4 pt-3 border-top">
+                    <p class="text-muted" style="font-size: 0.95rem;">Already have an account? <a href="#" class="auth-link fw-bold" onclick="toggleAuthView('view-login'); return false;">Sign In</a></p>
+                </div>
+            </div>
+
+            <!-- VIEW: FORGOT PASSWORD -->
+            <div id="view-forgot" class="hidden">
+                <h3 class="mb-2 text-center" style="color: var(--primary);">Reset Password</h3>
+                <p class="text-muted text-center mb-4">Enter your email and we'll send you a link to reset your password.</p>
+                
+                <form id="forgot-form" onsubmit="handleForgot(event)">
+                    <div class="input-group mb-4">
+                        <label>Email Address</label>
+                        <input type="email" id="forgot-email" class="form-input" placeholder="dr@example.com" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Send Reset Link</button>
+                </form>
+                <div class="text-center mt-4 pt-3 border-top">
+                    <a href="#" class="auth-link fw-bold" onclick="toggleAuthView('view-login'); return false;"><i class="fa-solid fa-arrow-left"></i> Back to Login</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- SCREEN: ADMIN PORTAL -->
+    <div id="admin-screen" class="screen portal-layout">
+        <aside class="sidebar" id="admin-sidebar" style="background: var(--primary);">
+            <div class="brand">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Admin Panel</span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-link active"><i class="fa-solid fa-users-gear"></i> User Management</a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info-sm mb-3">
+                    <div class="avatar" style="background: var(--danger);"><i class="fa-solid fa-user-shield"></i></div>
+                    <div class="details">
+                        <strong>Super Admin</strong>
+                        <span>System Control</span>
+                    </div>
+                </div>
+                <button class="btn btn-outline-danger w-100" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <header class="topbar">
+                <h2>User Management</h2>
+                <div class="user-badge" title="Admin Profile"><i class="fa-solid fa-shield"></i></div>
+            </header>
+            
+            <div class="content-body">
+                
+                <!-- Admin Analytics Grid -->
+                <div class="stats-grid mb-4">
+                    <div class="stat-card">
+                        <div class="icon"><i class="fa-solid fa-users"></i></div>
+                        <div class="info">
+                            <h4>Total Users</h4>
+                            <h2 id="admin-stat-users">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon" style="background: #fef3c7; color: #d97706;"><i class="fa-solid fa-crown"></i></div>
+                        <div class="info">
+                            <h4>Premium Members</h4>
+                            <h2 id="admin-stat-premium">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon" style="background: #fce7f3; color: #db2777;"><i class="fa-solid fa-layer-group"></i></div>
+                        <div class="info">
+                            <h4>Platform MCQs Solved</h4>
+                            <h2 id="admin-stat-mcqs">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h3 class="mb-2"><i class="fa-solid fa-address-book text-primary"></i> User Directory</h3>
+                            <p class="text-muted">Manage all students, their subscription status, and platform access.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="admin-table w-100">
+                            <thead>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Email Address</th>
+                                    <th>Join Date</th>
+                                    <th>Status / Role</th>
+                                    <th class="text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-users-tbody">
+                                <!-- Users injected here via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- SCREEN: USER PORTAL -->
+    <div id="user-screen" class="screen portal-layout">
+        <aside class="sidebar" id="main-sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-stethoscope"></i>
+                <span>FCPS Pro</span>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-link active" onclick="switchUserTab('dash', this); return false;"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+                <a href="#" class="nav-link" onclick="switchUserTab('qbank', this); return false;"><i class="fa-solid fa-layer-group"></i> Create Test</a>
+                <a href="#" class="nav-link" onclick="switchUserTab('mistakes', this); return false;"><i class="fa-solid fa-book-medical"></i> Review Mistakes</a>
+                <a href="#" class="nav-link" onclick="switchUserTab('analytics', this); return false;"><i class="fa-solid fa-ranking-star"></i> My Analytics</a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info-sm mb-3">
+                    <div class="avatar"><i class="fa-solid fa-user-doctor"></i></div>
+                    <div class="details">
+                        <strong id="display-username">Dr. Guest</strong>
+                        <span>FCPS Part 1 Aspirant</span>
+                    </div>
+                </div>
+                <button class="btn btn-outline-danger w-100" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </div>
+        </aside>
+        
+        <main class="main-content" id="main-content-area">
+            <header class="topbar">
+                <h2 id="topbar-title">Dashboard Overview</h2>
+                <div class="user-badge" title="Profile Settings"><i class="fa-regular fa-user"></i></div>
+            </header>
+            
+            <div class="content-body">
+                <!-- TAB: DASHBOARD -->
+                <div id="tab-dash" class="user-tab">
+                    <div class="welcome-banner mb-4">
+                        <div>
+                            <h3>Welcome back, Doctor!</h3>
+                            <p>Your FCPS Part 1 preparation is on track. Let's conquer another block today.</p>
+                        </div>
+                        <button class="btn btn-light btn-lg" onclick="switchUserTab('qbank', document.querySelectorAll('.nav-link')[1])">Create Mock Test</button>
+                    </div>
+                    
+                    <div class="stats-grid mt-4">
+                        <div class="stat-card">
+                            <div class="icon"><i class="fa-solid fa-file-pen"></i></div>
+                            <div class="info">
+                                <h4>Attempted MCQs</h4>
+                                <h2 id="user-attempted-mcqs">0</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon"><i class="fa-solid fa-bullseye"></i></div>
+                            <div class="info">
+                                <h4>Overall Accuracy</h4>
+                                <h2 id="user-accuracy">0%</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="icon"><i class="fa-solid fa-unlock-keyhole"></i></div>
+                            <div class="info">
+                                <h4>Unseen MCQs</h4>
+                                <h2 id="user-unseen-mcqs">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- TAB: QUESTION BANK -->
+                <div id="tab-qbank" class="user-tab hidden">
+                    <div class="card p-5">
+                        <h3 class="mb-2"><i class="fa-solid fa-sliders text-primary"></i> Test Parameters</h3>
+                        <p class="text-muted mb-4">Configure your block. The engine will automatically prioritize highly complex vignettes to match FCPS standards.</p>
+                        
+                        <div class="config-grid">
+                            <div class="input-group">
+                                <label>Number of Questions</label>
+                                <select id="qb-count" class="form-select">
+                                    <option value="10">10 Questions (Quick Review)</option>
+                                    <option value="25">25 Questions</option>
+                                    <option value="50" selected>50 Questions (Half Block)</option>
+                                    <option value="100">100 Questions (Full Block)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label>Test Mode</label>
+                                <select id="qb-mode" class="form-select">
+                                    <option value="0">Tutor Mode (Untimed, immediate feedback)</option>
+                                    <option value="60" selected>Timed Mock Test (60s/Q, Immersive Focus)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4 border" style="margin: 30px 0;">
+                        
+                        <button class="btn btn-primary btn-lg w-100" onclick="generateQuiz()">
+                            <i class="fa-solid fa-play"></i> Start Exam Block
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB: REVIEW MISTAKES -->
+                <div id="tab-mistakes" class="user-tab hidden">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h3 class="mb-2">Mistakes Bank</h3>
+                            <p class="text-muted">Review questions you answered incorrectly. High-yield concepts usually repeat.</p>
+                        </div>
+                        <button class="btn btn-outline-danger" onclick="clearMistakes()"><i class="fa-solid fa-trash-can"></i> Clear Bank</button>
+                    </div>
+                    <div id="mistakes-container" class="mt-4">
+                        <!-- Mistakes injected here -->
+                    </div>
+                </div>
+                
+                <!-- TAB: ANALYTICS -->
+                <div id="tab-analytics" class="user-tab hidden">
+                    <div class="card p-5">
+                        <h3 class="mb-4"><i class="fa-solid fa-chart-line text-primary"></i> Performance Analytics</h3>
+                        <div class="mt-4 d-flex align-items-center gap-4">
+                            <div class="circular-progress">
+                                <span id="analytic-accuracy">0%</span>
+                            </div>
+                            <div>
+                                <h4 style="font-size: 1.2rem; margin-bottom: 5px;">Overall Competency Score</h4>
+                                <p class="text-muted">Target is >70% for a safe pass in FCPS Part 1.</p>
+                            </div>
+                        </div>
+                        <hr class="border" style="margin: 30px 0;">
+                        <button class="btn btn-outline-danger" onclick="resetUserProgress()"><i class="fa-solid fa-rotate-left"></i> Factory Reset Progress</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- SCREEN: QUIZ INTERFACE (Immersive Mode) -->
+    <div id="quiz-screen" class="screen quiz-layout">
+        <aside class="quiz-sidebar" id="quiz-sidebar">
+            <div class="quiz-sidebar-header">
+                <h3>Block Navigator</h3>
+                <div id="quiz-timer" class="timer-badge hidden"><i class="fa-regular fa-clock"></i> <span id="time-display">00:00</span></div>
+            </div>
+            <div class="nav-grid" id="nav-grid">
+                <!-- Nav boxes injected here -->
+            </div>
+            <div class="quiz-sidebar-footer">
+                <button class="btn btn-primary w-100 mb-2" onclick="quitQuiz()">Submit Block</button>
+                <button class="btn btn-outline w-100" onclick="startReview()" id="btn-review-from-test" style="display:none;">Review Answers</button>
+            </div>
+        </aside>
+        
+        <main class="quiz-main">
+            <div class="q-header">
+                <div class="q-number">Question <span id="q-curr">1</span> of <span id="q-total">50</span></div>
+                <div class="q-actions">
+                    <button class="btn-icon-lg" id="btn-flag" title="Flag for Review"><i class="fa-regular fa-flag"></i></button>
+                </div>
+            </div>
+            
+            <div class="q-body">
+                <div class="q-text" id="q-text">Loading question...</div>
+                <div class="options-container" id="options-container">
+                    <!-- Options injected here -->
+                </div>
+            </div>
+            
+            <div class="explanation-container hidden" id="explanation-container">
+                <h4><i class="fa-solid fa-lightbulb text-warning"></i> Educational Objective</h4>
+                <p id="exp-text"></p>
+            </div>
+            
+            <div class="q-footer">
+                <button class="btn btn-outline" id="btn-prev" onclick="goPrev()"><i class="fa-solid fa-chevron-left"></i> Previous</button>
+                <button class="btn btn-primary" id="btn-next" onclick="goNext()">Next <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </main>
+    </div>
+
+    <!-- SCREEN: RESULTS -->
+    <div id="res-screen" class="screen center-layout">
+        <div class="res-card">
+            <i class="fa-solid fa-square-poll-vertical fa-4x mb-4" style="color: var(--primary-light);"></i>
+            <h2 class="mb-2">Block Completed</h2>
+            <h1 id="res-pct" class="mb-4" style="font-size: 4rem; font-weight: 700; color: var(--primary);">0%</h1>
+            
+            <div class="res-stats">
+                <div class="r-stat"><span class="r-val text-success" id="res-cor">0</span><span class="r-lbl">Correct</span></div>
+                <div class="r-stat"><span class="r-val text-danger" id="res-inc">0</span><span class="r-lbl">Incorrect</span></div>
+                <div class="r-stat"><span class="r-val text-muted" id="res-omit">0</span><span class="r-lbl">Omitted</span></div>
+            </div>
+            
+            <div class="d-flex gap-3 mt-4">
+                <button class="btn btn-outline w-100" onclick="startReview()"><i class="fa-solid fa-magnifying-glass"></i> Review Answers</button>
+                <button class="btn btn-primary w-100" onclick="exitToPortal()"><i class="fa-solid fa-house"></i> Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
